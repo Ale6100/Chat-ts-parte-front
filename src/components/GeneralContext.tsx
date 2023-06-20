@@ -20,7 +20,7 @@ interface GeneralContextProviderProps {
     children: React.ReactNode;
 }
 
-const socket = io('http://127.0.0.1:8080', { // Inicializamos socket del lado del cliente
+const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, { // Inicializamos socket del lado del cliente
     autoConnect: false
 }); 
 

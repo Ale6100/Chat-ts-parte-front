@@ -34,7 +34,7 @@ const OneMessage = ({ msg }: { msg: Message }) => {
                 body: JSON.stringify({ id: msg._id }),
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${import.meta.env.VITE_BACKEND_URL}`
+                    Authorization: `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`
                 }
             }).then(res => res.json())
 

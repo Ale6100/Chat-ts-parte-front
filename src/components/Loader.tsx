@@ -14,10 +14,8 @@ const Loader = () => {
         if (user) { // Si ya hay un usuario autenticado...
             const toleranceTime = setTimeout(() => { // Define siete segundos de tolerancia de espera hasta que lleguen los datos del backend. Si pasa ese tiempo, aparece un mensaje pidiendo disculpas
                 setTolerance(false)
-                console.log("Esto no");
                 
             }, 7000);
-            console.log("Esto se muestra");
             
             return () => clearTimeout(toleranceTime)
         }
