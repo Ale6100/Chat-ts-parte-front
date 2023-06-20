@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    * {
+        @apply m-0 p-0;
+    }
+
+    .globoTexto {
+        @apply my-2 border-black border-2 p-1 rounded-md w-3/4 max-md:w-11/12
+    }
+
+    .user {
+        @apply font-semibold text-lg
+    }
+
+    .pFecha {
+        @apply my-1 text-center font-semibold text-lg
+    }
+
+    .containerOneMessage {
+        @apply my-1 px-1 bg-blue-200 border-black border
+    }
+}
+
+.chat {
+    height: 70vh;
+}
+
+.breakWords {
+    word-break: break-word
+}
+
+@media screen and (max-height: 420px) {
+    .chat {
+        height: 60vh;
+    }
+}
+
+@media screen and (max-height: 470px) {
+    .imgChatCitado {
+        max-height: 100px;
+    }
+}
+
+@media screen and (max-height: 500px) {
+    .creditos {
+        display: none;
+    }
+} 
