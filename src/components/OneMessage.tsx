@@ -7,7 +7,7 @@ import PanelOptions from "./PanelOptions"
 import { GeneralContext } from "./GeneralContext"
 import Swal from "sweetalert2"
 
-const OneMessage = ({ msg }: { msg: Message }) => {
+const OneMessage = ({ msg }: { msg: Message }) => { // Estructura de cada mensaje
     const generalContext = useContext(GeneralContext);
     if (!generalContext) return <></>
     const { idPanelAbierto, setIdPanelAbierto, socket } = generalContext
@@ -28,36 +28,40 @@ const OneMessage = ({ msg }: { msg: Message }) => {
             text: "Debes ingresar una contraseña especial para eliminar mensajes",
             allowOutsideClick: false,
             allowEscapeKey: false,
-        }).then( async (result: { value?: string }) => {            
-            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/eliminarMensaje?password=${result.value}`, {
-                method: "DELETE",
-                body: JSON.stringify({ id: msg._id }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+        }).then( async result => {        
+            if (result.isConfirmed) {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/eliminarMensaje?password=${result.value}`, {
+                    method: "DELETE",
+                    body: JSON.stringify({ id: msg._id }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`
+                    }
+                }).then(res => res.json())
+    
+                if (res.status === "error") {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        title: `${res.message ?? "Error, intente de nuevo más tarde"}`,
+                        icon: "error"
+                    })
+                } else {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        title: `${res.message}`,
+                        icon: "success"
+                    })
+    
+                    socket?.emit("actualizar", { data: res.data }) 
                 }
-            }).then(res => res.json())
-
-            if (res.status === "error") {
-                Swal.fire({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 4000,
-                    title: `${res.message ?? "Error, intente de nuevo más tarde"}`,
-                    icon: "error"
-                })
-            } else {
-                Swal.fire({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 4000,
-                    title: `${res.message}`,
-                    icon: "success"
-                })
-
-                socket?.emit("actualizar", { data: res.data }) 
             }
         })
     }

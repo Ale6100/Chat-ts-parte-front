@@ -2,7 +2,7 @@ import { useEffect, useRef, useContext } from "react";
 import { Message } from "../types";
 import { GeneralContext } from "./GeneralContext";
 
-const PanelOptions = ({ openPanel, msg }: { openPanel: boolean, msg: Message }) => {
+const PanelOptions = ({ openPanel, msg }: { openPanel: boolean, msg: Message }) => { // Menú de opciones habilitado en cada mensaje. Por ahora ese menú sólo tiene la opción de responder/citar mensajes
     const generalContext = useContext(GeneralContext);
     if (!generalContext) return <></>
     const { setIdPanelAbierto, setInfoMsgCitado } = generalContext

@@ -6,7 +6,7 @@ import Loader from './Loader';
 import { Message } from '../types';
 import { esNumerico } from '../utils/utils';
 
-const Contenedor = () => {
+const Contenedor = () => { // Componente inicial. Renderiza la alerta de inicio, el loading, y luego el chat
     const generalContext = useContext(GeneralContext);
     if (!generalContext) return <></>
     const { socket, user, setUser, arrayMensajes, setArrayMensajes } = generalContext
@@ -34,6 +34,12 @@ const Contenedor = () => {
             }
         })
 
+        socket?.on("logs", (data: Message[]) => {
+            setArrayMensajes(data)     
+        })
+    }, [])
+
+    useEffect(() => {
         socket?.on("newUserConnected", (user_: string) => { // Muestra una pequeña alerta cuando un usuario nuevo se conecta, siempre y cuando el actual se haya identificado
             if (user) {
                 Swal.fire({
@@ -46,11 +52,7 @@ const Contenedor = () => {
                 })
             }
         })
-
-        socket?.on("logs", (data: Message[]) => {
-            setArrayMensajes(data)     
-        })
-    }, [])
+    }, [user])
 
     return (
         <div className='p-1 relative flex flex-col mx-auto max-w-6xl'>

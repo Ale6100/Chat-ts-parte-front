@@ -178,9 +178,12 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
 
     }, [montado, arrayMensajes])
 
-    useEffect(() => { // Se encarga de scrollear hacia abajo siempre que enviaste un mensaje
+    useEffect(() => { // Se encarga de scrollear hacia abajo siempre que haya un nuevo mensaje
         if (montado) {
-            if (logsPanel.current?.scrollTop && user === arrayMensajes.at(-1)?.user) logsPanel.current?.scrollTo(0, logsPanel.current.scrollHeight);
+            if (logsPanel.current) {
+                const { scrollHeight } = logsPanel.current;
+                logsPanel.current.scrollTo(0, scrollHeight);
+            }
         }
     }, [arrayGlobosDeTexto])
 
@@ -299,7 +302,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                 }
             </div>
 
-            <div ref={contCita} className='origin-bottom transition-all scale-0 opacity-0 p-1 relative bg-gray-400 border-t border-black'> {/* Para citar mensajes */}
+            <div ref={contCita} className='origin-bottom transition-all scale-0 opacity-0 relative p-1 bg-blue-200 border-t border-black'> {/* Para citar mensajes */}
                 <CitarAhora/>
             </div>
         </div>

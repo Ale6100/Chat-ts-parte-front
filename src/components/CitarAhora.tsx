@@ -2,7 +2,7 @@ import { useContext } from "react";
 import IconClose from "./svg/IconClose"
 import { GeneralContext } from "./GeneralContext";
 
-const CitarAhora = () => {
+const CitarAhora = () => { // Componente que se muestra cuando estás citando un mensaje
     const generalContext = useContext(GeneralContext);
     if (!generalContext) return <></>
     const { infoMsgCitado, setInfoMsgCitado } = generalContext

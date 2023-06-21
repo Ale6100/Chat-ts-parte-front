@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react"
 import { GeneralContext } from "./GeneralContext";
-
 import { JellyTriangle } from '@uiball/loaders'
 
 const Loader = () => {
@@ -14,7 +13,6 @@ const Loader = () => {
         if (user) { // Si ya hay un usuario autenticado...
             const toleranceTime = setTimeout(() => { // Define siete segundos de tolerancia de espera hasta que lleguen los datos del backend. Si pasa ese tiempo, aparece un mensaje pidiendo disculpas
                 setTolerance(false)
-                
             }, 7000);
             
             return () => clearTimeout(toleranceTime)
@@ -30,4 +28,3 @@ const Loader = () => {
 }
 
 export default Loader
-
