@@ -226,7 +226,6 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
             setFileSelected(false)
         }
     };
-      
 
     const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -258,20 +257,22 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
             }).showToast();
         }
     
-        const mensaje = (obj.mensaje as string).trim();
-    
-        const file = obj.imageForm as File | undefined
-        let fileBase64 = ""
-        
-        if (file) {
-            fileBase64 = await convertToBase64(file) as string
-            if (fileBase64 !== "data:") {
+        let mensaje = ''
+        if (typeof obj.mensaje === 'string') {
+            mensaje = obj.mensaje.trim()
+        }
+
+        const file = obj.imageForm
+
+        if (file instanceof File) {
+            const fileBase64 = await convertToBase64(file) as string
+            if (fileBase64 !== "No image") {
                 obj.image = fileBase64
             }
         }
 
         if (mensaje.length > 0 || obj.image) { // Se ejecuta si el mensaje es un string no vacío o si se quiere enviar una imagen       
-            const fecha = new Date().toLocaleDateString() // Fecha y hora en la que se mandó el mensaje
+            const fecha = new Date().toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' }).replaceAll('-', '/') // Fecha y hora en la que se mandó el mensaje. El replace lo uso porque a algunos pocos usuarios les aparecen guiones en vez de barras laterales
             const hora = new Date().toLocaleTimeString()            
 
             const respuestaGuardada = {
