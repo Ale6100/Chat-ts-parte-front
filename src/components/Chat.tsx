@@ -10,8 +10,7 @@ import CitarAhora from "./CitarAhora";
 
 const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, arrayMensajes: Message[] }) => {
     const generalContext = useContext(GeneralContext);
-    if (!generalContext) return <></>
-    const { infoMsgCitado, setInfoMsgCitado } = generalContext
+    const { infoMsgCitado, setInfoMsgCitado } = generalContext ? generalContext : { infoMsgCitado: undefined, setInfoMsgCitado: () =>{} }
 
     const [ montado, setMontado ] = useState(false)
     const [ fileSelected, setFileSelected ] = useState(false)
@@ -29,7 +28,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
         let arrayGlobosDeTexto_local: ReactElement[] = []
 
         if (montado) {
-            if (arrayMensajes.length === 0) {                    
+            if (arrayMensajes.length === 0) {
                 arrayGlobosDeTexto_local = [<p>No hay mensajes para mostrar</p>]
             }
 
@@ -38,7 +37,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                     arrayGlobosDeTexto_local = [
                         <>
                         <p className="pFecha">----- {element.fecha} -----</p>
-                        
+
                         <div className={`globoTexto ${element.user === user ? "ml-auto": ""}`}>
                             <p className="user">{element.user}</p>
                             <div className="containerOneMessage">
@@ -47,17 +46,17 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                         </div>
                         </>
                     ]
-                    
+
                 } else {
                     const fechaActual = new Date(element.fecha.split('/').reverse().join('-')).getTime()
                     const fechaAnterior = new Date(arrayMensajes[index-1]?.fecha.split('/').reverse().join('-')).getTime() // Uso el signo de pregunta ya que en la primera iteración, data[index-1] no está definido, pero no importa ya que en ese momento no lo necesitamos
 
                     if (index === 0) { // Entra en este if si estamos en la primera iteración (correspondiente al primer mensaje)
                         arrayGlobosDeTexto_local = [<p className="pFecha">----- {element.fecha} -----</p>] // Al inicio siempre se mostrará la primera fecha
-                        
-                        arrayComponentesMensajesIndividuales = [<OneMessage msg={element}/>] // Guardamos el primer mensaje                     
-                        
-                    } else if (index !== arrayMensajes.length-1) { // Entra en este if si no estamos ni en la primera iteración (mensaje) ni en la última                        
+
+                        arrayComponentesMensajesIndividuales = [<OneMessage msg={element}/>] // Guardamos el primer mensaje
+
+                    } else if (index !== arrayMensajes.length-1) { // Entra en este if si no estamos ni en la primera iteración (mensaje) ni en la última
                         if (arrayMensajes[index].user !== arrayMensajes[index-1].user) { // Cuando el mensaje actual y el anterior son de distinto usuario
                             arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local,
                                 <div className={`globoTexto ${arrayMensajes[index-1].user === user ? "ml-auto": ""}`}>
@@ -71,7 +70,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                                     }
                                 </div>
                             ]
-                            
+
 
                             if (fechaActual !== fechaAnterior) { // Si además hubo un cambio de fecha, muestra la actual, correspondiente a la fecha del mensaje enviado por el nuevo usuario                               
                                 arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local, <p className="pFecha">----- {element.fecha} -----</p>]
@@ -79,7 +78,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
 
                             arrayComponentesMensajesIndividuales = [<OneMessage msg={element}/>] // Se guarda únicamente el mensaje actual, correspondiente al nuevo usuario
 
-                        } else { // Cuando el mensaje actual y el anterior son del mismo usuario                            
+                        } else { // Cuando el mensaje actual y el anterior son del mismo usuario
                             if (fechaActual !== fechaAnterior) { // Si hubo un cambio de fecha, ponemos el globo con los mensajes viejos acumulados y la fecha actual
                                 arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local,
                                     <>
@@ -96,15 +95,15 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                                     <p className="pFecha">----- {element.fecha} -----</p>
                                     </>
                                 ]
-    
+
                                 arrayComponentesMensajesIndividuales = []
                             }
-    
-                            arrayComponentesMensajesIndividuales = [...arrayComponentesMensajesIndividuales, <OneMessage msg={element}/>]                            
+
+                            arrayComponentesMensajesIndividuales = [...arrayComponentesMensajesIndividuales, <OneMessage msg={element}/>]
                         }
-                    
+
                     } else if (index === arrayMensajes.length-1) { // En la última iteración
-                        if (arrayMensajes[index].user !== arrayMensajes[index-1].user) { // Cuando los últimos dos mensajes son de distinto usuario                            
+                        if (arrayMensajes[index].user !== arrayMensajes[index-1].user) { // Cuando los últimos dos mensajes son de distinto usuario
                             // En un contenedor grande se visualizan todos los mensajes previos guardados, correspondiente al usuario anterior
                             arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local,
                             <div className={`globoTexto ${arrayMensajes[index-1].user === user ? "ml-auto": ""}`}>
@@ -120,7 +119,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                             ]
 
                             if (fechaActual !== fechaAnterior) { // Si además hubo un cambio de fecha, muestra la actual, correspondiente a la fecha del mensaje enviado por el nuevo usuario
-                                arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local, <p className="pFecha">----- {element.fecha} -----</p>]                                
+                                arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local, <p className="pFecha">----- {element.fecha} -----</p>]
                             }
 
                             // Se visualiza el último mensaje enviado, correspondiente al nuevo usuario
@@ -133,9 +132,9 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                             </div>
                             ]
 
-                        } else { // Cuando los últimos dos mensajes son del mismo usuario    
+                        } else { // Cuando los últimos dos mensajes son del mismo usuario
                             if (fechaActual !== fechaAnterior) { // Si hubo un cambio de fecha
-                                arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local, 
+                                arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local,
                                     <>
                                     <div className={`globoTexto ${element.user === user ? "ml-auto": ""}`}>
                                         <p className="user">{element.user}</p>
@@ -156,8 +155,8 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                             }
 
                             arrayComponentesMensajesIndividuales = [...arrayComponentesMensajesIndividuales, <OneMessage msg={element}/>] // Guardo el último mensaje          
-                            
-                            arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local, 
+
+                            arrayGlobosDeTexto_local = [...arrayGlobosDeTexto_local,
                                 <div className={`globoTexto ${element.user === user ? "ml-auto": ""}`}>
                                     <p className="user">{element.user}</p>
                                     {
@@ -206,7 +205,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const nameFile = e.currentTarget.files?.[0]?.name;
-                
+
         if (nameFile) {
             setFileSelected(true)
             Toastify({
@@ -234,14 +233,15 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
         interface ObjInt {
             [key: string]: FormDataEntryValue
         }
-    
+
         const formData = new FormData(form)
         const obj: ObjInt = {}
         formData.forEach((value, key) => obj[key] = value)
-        
+
         const imageSize = (obj.imageForm as { size: number } ).size;
-    
-        if (imageSize >= 1000000) { // Si la imagen supera los 1MB, rechaza el mensaje (técnicamente debería considera el tamaño de la imagen más los otros datos, pero como pesan muy poco voy a hacer la vista gorda aunque no sea correcto. En el futuro cambiaré esto)
+
+        // Probando esto noté que el tamaño es más grande que lo que dice acá así que achiqué el límite
+        if (imageSize >= 950000) { // Si la imagen supera los 1MB, rechaza el mensaje (técnicamente debería considera el tamaño de la imagen más los otros datos, pero como pesan muy poco voy a hacer la vista gorda aunque no sea correcto. En el futuro cambiaré esto)
             return Toastify({
                 text: "Por ahora el tamaño de la imagen no puede exceder 1MB",
                 duration: 3000,
@@ -256,7 +256,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                 }
             }).showToast();
         }
-    
+
         let mensaje = ''
         if (typeof obj.mensaje === 'string') {
             mensaje = obj.mensaje.trim()
@@ -271,9 +271,9 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
             }
         }
 
-        if (mensaje.length > 0 || obj.image) { // Se ejecuta si el mensaje es un string no vacío o si se quiere enviar una imagen       
+        if (mensaje.length > 0 || obj.image) { // Se ejecuta si el mensaje es un string no vacío o si se quiere enviar una imagen
             const fecha = new Date().toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' }).replaceAll('-', '/') // Fecha y hora en la que se mandó el mensaje. El replace lo uso porque a algunos pocos usuarios les aparecen guiones en vez de barras laterales
-            const hora = new Date().toLocaleTimeString()            
+            const hora = new Date().toLocaleTimeString()
 
             const respuestaGuardada = {
                 authorCapturado: infoMsgCitado?.authorCapturado,
@@ -284,7 +284,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
 
             socket.emit("message", { user, message: mensaje, fecha, hora, image: obj.image, respuestaGuardada }) // Emito un evento personalizado "message". Envío el usuario, el mensaje, la fecha, la hora y la url de la imagen en caso de que haya enviados
         }
-        
+
         setInfoMsgCitado(undefined)
         setFileSelected(false)
         form.reset()
@@ -307,7 +307,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
                 <CitarAhora/>
             </div>
         </div>
-        
+
         <form className='flex justify-between h-9' onSubmit={sendMessage}>
             <input type="text" name="mensaje" placeholder="Escribe tu mensaje..." autoComplete="off" className='w-full'/>
 
@@ -321,7 +321,7 @@ const Chat = ({ user, socket, arrayMensajes }: { user: string, socket: Socket, a
 
                     <input onChange={handleFileSelect} id="filePicker" className="hidden" name="imageForm" type={"file"} accept="image/*" />
                 </div>
-                
+
                 <button className='w-7 h-7' type="submit">
                     <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" version="1.1" x="0px" y="0px" enableBackground="new 0 0 24 24"><path fill="currentColor" d="M1.101,21.757L23.8,12.028L1.101,2.3l0.011,7.912l13.623,1.816L1.112,13.845 L1.101,21.757z"></path></svg>
                 </button>

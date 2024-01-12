@@ -8,8 +8,7 @@ import { esNumerico } from '../utils/utils';
 
 const Contenedor = () => { // Componente inicial. Renderiza la alerta de inicio, el loading, y luego el chat
     const generalContext = useContext(GeneralContext);
-    if (!generalContext) return <></>
-    const { socket, user, setUser, arrayMensajes, setArrayMensajes } = generalContext
+    const { socket, user, setUser, arrayMensajes, setArrayMensajes } = generalContext ? generalContext : { socket: undefined, user: undefined, setUser: () => {}, arrayMensajes: undefined, setArrayMensajes: () => {} };
 
     useEffect(() => {
         Swal.fire({ // Muestra una alerta que te pide tu nombre
@@ -35,7 +34,7 @@ const Contenedor = () => { // Componente inicial. Renderiza la alerta de inicio,
         })
 
         socket?.on("logs", (data: Message[]) => {
-            setArrayMensajes(data)     
+            setArrayMensajes(data)
         })
     }, [])
 

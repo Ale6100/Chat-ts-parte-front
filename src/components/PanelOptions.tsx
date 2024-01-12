@@ -4,9 +4,8 @@ import { GeneralContext } from "./GeneralContext";
 
 const PanelOptions = ({ openPanel, msg }: { openPanel: boolean, msg: Message }) => { // Menú de opciones habilitado en cada mensaje. Por ahora ese menú sólo tiene la opción de responder/citar mensajes
     const generalContext = useContext(GeneralContext);
-    if (!generalContext) return <></>
-    const { setIdPanelAbierto, setInfoMsgCitado } = generalContext
-    
+    const { setIdPanelAbierto, setInfoMsgCitado } = generalContext ? generalContext : { setIdPanelAbierto: () => {}, setInfoMsgCitado: () => {} };
+
     const div = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -14,7 +13,7 @@ const PanelOptions = ({ openPanel, msg }: { openPanel: boolean, msg: Message }) 
         if (classList) {
             if (openPanel) {
                 classList.remove("scale-0", "opacity-0")
-                classList.add("scale-1", "opacity-1")            
+                classList.add("scale-1", "opacity-1")
             } else {
                 classList.remove("scale-1", "opacity-1")
                 classList.add("scale-0", "opacity-0")

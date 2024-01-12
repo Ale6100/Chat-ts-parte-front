@@ -22,7 +22,7 @@ interface GeneralContextProviderProps {
 
 const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, { // Inicializamos socket del lado del cliente
     autoConnect: false
-}); 
+});
 
 const GeneralContextProvider = ({ children }: GeneralContextProviderProps) => {
     const [ user, setUser ] = useState<string | undefined>(undefined)

@@ -8,7 +8,7 @@ const MsgCitado = ( { respuestaGuardada }: { respuestaGuardada: Message["respues
                 <p className="font-medium">{respuestaGuardada.authorCapturado}</p>
                 <div>
                     <p className="text-sm breakWords">{respuestaGuardada.mensajeCapturado}</p>
-                    { respuestaGuardada.imagenCapturada && <img className="max-w-[50%] max-h-52" src={respuestaGuardada.imagenCapturada} alt="Imagen mensaje citado" /> }
+                    { respuestaGuardada.imagenCapturada && <img loading="lazy" className="max-w-[50%] max-h-52" src={respuestaGuardada.imagenCapturada} alt="Imagen mensaje citado" /> }
                 </div>
             </div>
         }

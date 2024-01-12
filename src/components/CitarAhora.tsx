@@ -19,7 +19,7 @@ const CitarAhora = () => { // Componente que se muestra cuando estás citando un
 
         <div className="flex justify-evenly">
             <p className="breakWords">{infoMsgCitado?.mensajeCapturado}</p>
-            {infoMsgCitado.imagenCapturada && <img className="max-w-[75%] max-h-72 imgChatCitado" src={infoMsgCitado?.imagenCapturada} alt="Imagen citada" />}
+            {infoMsgCitado.imagenCapturada && <img loading="lazy" className="max-w-[75%] max-h-72 imgChatCitado" src={infoMsgCitado?.imagenCapturada} alt="Imagen citada" />}
         </div>
 
         <span onClick={close} className="absolute top-0 right-1 cursor-pointer">
